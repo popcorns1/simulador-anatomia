@@ -34,7 +34,76 @@ const esLetraRespuesta = (val) => {
   const limpio = String(val).trim().toUpperCase()
   return ['A', 'B', 'C', 'D'].includes(limpio)
 }
+const temasVisuales = [
+  {
+    accent: '#3b82f6',
+    hover: '#2563eb',
+    soft: 'rgba(59,130,246,.15)',
+    g1: '#2563eb',
+    g2: '#7c3aed',
+    g3: '#06b6d4'
+  },
 
+  {
+    accent: '#10b981',
+    hover: '#059669',
+    soft: 'rgba(16,185,129,.15)',
+    g1: '#059669',
+    g2: '#14b8a6',
+    g3: '#84cc16'
+  },
+
+  {
+    accent: '#ef4444',
+    hover: '#dc2626',
+    soft: 'rgba(239,68,68,.15)',
+    g1: '#dc2626',
+    g2: '#f97316',
+    g3: '#f59e0b'
+  },
+
+  {
+    accent: '#8b5cf6',
+    hover: '#7c3aed',
+    soft: 'rgba(139,92,246,.15)',
+    g1: '#7c3aed',
+    g2: '#ec4899',
+    g3: '#3b82f6'
+  },
+
+  {
+    accent: '#ec4899',
+    hover: '#db2777',
+    soft: 'rgba(236,72,153,.15)',
+    g1: '#db2777',
+    g2: '#9333ea',
+    g3: '#6366f1'
+  },
+
+  {
+    accent: '#f59e0b',
+    hover: '#d97706',
+    soft: 'rgba(245,158,11,.15)',
+    g1: '#d97706',
+    g2: '#ef4444',
+    g3: '#f97316'
+  }
+]
+
+const aplicarTemaAleatorio = () => {
+  const tema =
+    temasVisuales[Math.floor(Math.random() * temasVisuales.length)]
+
+  const root = document.documentElement
+
+  root.style.setProperty('--accent', tema.accent)
+  root.style.setProperty('--accent-hover', tema.hover)
+  root.style.setProperty('--accent-soft', tema.soft)
+
+  root.style.setProperty('--gradient-1', tema.g1)
+  root.style.setProperty('--gradient-2', tema.g2)
+  root.style.setProperty('--gradient-3', tema.g3)
+}
 // Normalizador inteligente: corrige automáticamente si vienen 10 columnas o 12 columnas (con ESTRUCTURAL / INTERMEDIA)
 const normalizarPregunta = (item, idx) => {
   // Si el elemento fue guardado con el desfase de 2 columnas (ESTRUCTURAL / INTERMEDIA)
@@ -124,6 +193,9 @@ const normalizarPregunta = (item, idx) => {
 
 // Cargar preguntas directamente de banco.json (o de la base guardada si banco.json tiene pocas)
 onMounted(() => {
+
+  aplicarTemaAleatorio()
+
   if (Array.isArray(bancoInicial) && bancoInicial.length > 10) {
     listaCruda.value = bancoInicial
     return
@@ -869,17 +941,26 @@ const letraOpcion = (i) => ['A', 'B', 'C', 'D'][i] || ''
   --bg-main: #0f172a;
   --bg-card: #1e293b;
   --bg-card-hover: #334155;
+
   --text-primary: #f8fafc;
   --text-secondary: #94a3b8;
+
   --accent: #3b82f6;
   --accent-hover: #2563eb;
+
+  --accent-soft: rgba(59,130,246,.15);
+
+  --gradient-1: #3b82f6;
+  --gradient-2: #8b5cf6;
+  --gradient-3: #06b6d4;
+
   --purple: #9333ea;
   --success: #10b981;
   --danger: #ef4444;
   --warning: #f59e0b;
+
   --border: #334155;
 }
-
 * {
   box-sizing: border-box;
   margin: 0;
@@ -888,9 +969,30 @@ const letraOpcion = (i) => ['A', 'B', 'C', 'D'][i] || ''
 
 body {
   font-family: 'Segoe UI', 'Inter', -apple-system, sans-serif;
-  background-color: var(--bg-main);
+
+  background:
+    radial-gradient(
+      circle at top left,
+      var(--gradient-1) 0%,
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at top right,
+      var(--gradient-2) 0%,
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at bottom center,
+      var(--gradient-3) 0%,
+      transparent 40%
+    ),
+    var(--bg-main);
+
   color: var(--text-primary);
   line-height: 1.5;
+
+  background-attachment: fixed;
+  min-height: 100vh;
 }
 
 .app-container {
@@ -904,12 +1006,24 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+
   padding: 0.9rem 2rem;
-  background-color: rgba(30, 41, 59, 0.95);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(15,23,42,.95),
+      rgba(30,41,59,.95)
+    );
+
   border-bottom: 1px solid var(--border);
+
   position: sticky;
   top: 0;
   z-index: 20;
+
+  backdrop-filter: blur(16px);
+
   flex-wrap: wrap;
   gap: 1rem;
 }
@@ -927,8 +1041,18 @@ body {
 .navbar-brand h1 {
   font-size: 1.15rem;
   font-weight: 700;
-}
 
+  background:
+    linear-gradient(
+      90deg,
+      var(--gradient-1),
+      var(--gradient-2),
+      var(--gradient-3)
+    );
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 .subtitle {
   font-size: 0.8rem;
   color: var(--text-secondary);
@@ -981,13 +1105,29 @@ body {
 
 /* CARDS & SETUP */
 .card {
-  background-color: var(--bg-card);
-  border: 1px solid var(--border);
+  background: rgba(30, 41, 59, 0.75);
+
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+
+  border: 1px solid rgba(255,255,255,0.08);
+
   border-radius: 14px;
   padding: 1.5rem;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.35);
-}
 
+  box-shadow:
+    0 10px 25px rgba(0, 0, 0, 0.35),
+    0 0 30px var(--accent-soft);
+
+  transition: all .25s ease;
+}
+.card:hover {
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 15px 40px rgba(0,0,0,.4),
+    0 0 40px var(--accent-soft);
+}
 .main-centered {
   flex: 1;
   display: flex;
@@ -1109,11 +1249,27 @@ body {
 }
 
 .btn-primary {
-  background: var(--accent);
+  background:
+    linear-gradient(
+      135deg,
+      var(--gradient-1),
+      var(--gradient-2)
+    );
+
   color: white;
+
+  box-shadow:
+    0 0 20px var(--accent-soft);
+
+  transform: translateY(0);
+
+  transition: all .2s ease;
 }
-.btn-primary:hover {
-  background: var(--accent-hover);
+  .btn-primary:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+  0 0 40px var(--accent-soft);
 }
 .btn-secondary {
   background: var(--bg-main);
@@ -1166,8 +1322,20 @@ body {
 
 .progress-bar-fill {
   height: 100%;
-  background: var(--accent);
-  transition: width 0.25s;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--gradient-1),
+      var(--gradient-2),
+      var(--gradient-3)
+    );
+
+  transition: width .3s ease;
+
+  box-shadow:
+    0 0 15px var(--gradient-1),
+    0 0 25px var(--gradient-2);
 }
 
 .question-header {
@@ -1294,7 +1462,11 @@ body {
 
 .option-btn.selected {
   border-color: var(--accent);
-  background: rgba(59, 130, 246, 0.14);
+
+  background: var(--accent-soft);
+
+  box-shadow:
+    0 0 20px var(--accent-soft);
 }
 
 .option-btn.correct {
@@ -1665,5 +1837,19 @@ body {
   .results-summary-card {
     flex-direction: column;
   }
+}
+@keyframes glowMove {
+
+  0% {
+    filter: hue-rotate(0deg);
+  }
+
+  100% {
+    filter: hue-rotate(25deg);
+  }
+}
+
+body {
+  animation: glowMove 8s ease-in-out infinite alternate;
 }
 </style>
