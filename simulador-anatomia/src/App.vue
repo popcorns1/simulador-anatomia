@@ -191,9 +191,9 @@ const normalizarPregunta = (item, idx) => {
   }
 }
 
-// Cargar preguntas directamente de banco.json (o de la base guardada si banco.json tiene pocas)
 onMounted(() => {
-
+console.log("bancoInicial:", bancoInicial)
+console.log("Cantidad:", bancoInicial.length)
   aplicarTemaAleatorio()
 
   if (Array.isArray(bancoInicial) && bancoInicial.length > 10) {
