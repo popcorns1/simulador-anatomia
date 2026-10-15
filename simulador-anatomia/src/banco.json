@@ -1,0 +1,14 @@
+[
+  {
+    "ID_Pregunta": "ANAT-0001",
+    "Macrobloque": "Introducción",
+    "Microcontenido": "Ejes y planos",
+    "Enunciado": "Durante una craneotomía se planifica un corte que divide el encéfalo en porciones derecha e izquierda equivalentes. ¿Cuál de las siguientes alternativas corresponde al plano utilizado?",
+    "Opción A": "Plano mediano",
+    "Opción B": "Plano frontal",
+    "Opción C": "Plano transversal",
+    "Opción D": "Plano oblicuo",
+    "Respuesta Correcta": "A",
+    "Justificación": "El plano mediano divide el cuerpo en mitades derecha e izquierda equivalentes según Moore 9.ª ed."
+  }
+]
