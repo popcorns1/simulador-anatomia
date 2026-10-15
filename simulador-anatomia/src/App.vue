@@ -168,7 +168,11 @@ const normalizarPregunta = (item, idx) => {
   )
     .trim()
     .toUpperCase()
-
+console.log(
+  id,
+  rawCorrecta,
+  item['Respuesta Correcta']
+)
   const mapaLetras = { A: 0, B: 1, C: 2, D: 3 }
   const indiceCorrecto = mapaLetras[rawCorrecta] !== undefined ? mapaLetras[rawCorrecta] : 0
   const letraCorrecta = ['A', 'B', 'C', 'D'][indiceCorrecto]
